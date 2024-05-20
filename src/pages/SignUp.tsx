@@ -1,3 +1,10 @@
+import AuthLayout from "../components/auth/AuthLayout"
+import SignupForm from "../components/auth/SignupForm"
+
 export default function SignUp() {
-  return <div> SignUp</div>
+  return (
+    <AuthLayout title='Đăng ký'>
+      <SignupForm />
+    </AuthLayout>
+  )
 }
