@@ -48,7 +48,12 @@ const SignInForm = () => {
         error={!!errors.password}
         helperText={errors.password?.message}
       />
-      <Stack direction='row' spacing={2} alignItems={"center"} sx={{ mt: 2 }}>
+      <Stack
+        direction='column'
+        spacing={2}
+        alignItems={"center"}
+        sx={{ mt: 2 }}
+      >
         <Button type='submit' size='large' variant='contained' color='primary'>
           Đăng nhập
         </Button>
