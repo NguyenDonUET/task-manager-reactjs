@@ -7,9 +7,12 @@ type GetTasksResponseType = {
   totalItems: number
   totalPages: number
 }
+const DEFAULT_PAGE_SIZE = 6
 
-export const getTasks = async (): Promise<GetTasksResponseType> => {
-  const { data } = await axiosInstance.get<GetTasksResponseType>("/tasks")
+export const getTasks = async (page: number): Promise<GetTasksResponseType> => {
+  const { data } = await axiosInstance.get<GetTasksResponseType>(
+    `/tasks?page=${page}&limit=${DEFAULT_PAGE_SIZE}`
+  )
   return data
 }
 

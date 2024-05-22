@@ -9,7 +9,7 @@ interface TasksContainerProps {
 
 const TasksContainer: React.FC<TasksContainerProps> = ({ tasks }) => {
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} minHeight={"540px"}>
       {tasks.map((task) => (
         <Grid item key={task._id} xs={12} sm={6} md={4}>
           <TaskCard task={task} />

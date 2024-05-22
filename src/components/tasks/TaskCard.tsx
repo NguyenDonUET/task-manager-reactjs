@@ -10,7 +10,7 @@ interface TaskCardProps {
 
 const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
   return (
-    <Card>
+    <Card className='min-h-[250px]'>
       <CardContent>
         <Typography variant='h6'>{task.name}</Typography>
         <Typography variant='body1'>Description: {task.description}</Typography>
