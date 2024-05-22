@@ -3,3 +3,5 @@ export const LOCAL_ACCESS_TOKEN_KEY = "accessToken"
 
 export const SIGN_IN_PATH = "/sign-in"
 export const SIGN_UP_PATH = "/sign-up"
+
+export const publicRoutes = [SIGN_IN_PATH, SIGN_UP_PATH]

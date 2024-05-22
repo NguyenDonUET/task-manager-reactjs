@@ -9,13 +9,15 @@ import MenuItem from "@mui/material/MenuItem"
 import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
 import * as React from "react"
+import { useAppSelector } from "../redux/hooks"
 
-const settings = ["Dashboard", "Logout"]
+const menuOptoins = ["Dashboard", "Logout"]
 
 function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   )
+  const { user } = useAppSelector((state) => state.user)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -32,8 +34,6 @@ function Header() {
           <Typography
             variant='h5'
             noWrap
-            component='a'
-            href='/'
             sx={{
               mr: 2,
               display: "flex",
@@ -54,7 +54,7 @@ function Header() {
                 onClick={handleOpenUserMenu}
                 className='cursor-pointer'
               >
-                Dôn nguyễn
+                {user?.username}
               </Typography>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
@@ -80,7 +80,7 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {menuOptoins.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign='center'>{setting}</Typography>
                 </MenuItem>
