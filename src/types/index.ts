@@ -1,8 +1,8 @@
 // types.ts
 
 export type SignUpFormData = {
-  name: string
+  username: string
   email: string
   password: string
 }
-export type SignInFormData = Omit<SignUpFormData, "name">
+export type SignInFormData = Omit<SignUpFormData, "username">

@@ -1,17 +1,24 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Link, Stack, TextField, Typography } from "@mui/material"
+import { useMutation } from "@tanstack/react-query"
+import { AxiosError } from "axios"
 import { useForm } from "react-hook-form"
-import { Link as RouterLink } from "react-router-dom"
+import toast from "react-hot-toast"
+import { Link as RouterLink, useNavigate } from "react-router-dom"
 import { z } from "zod"
+import { signUp } from "../../hooks/useSignUp"
 import { SignUpFormData } from "../../types"
+import { SIGN_IN_PATH } from "../../utils/constants"
 
 const schema = z.object({
-  name: z.string().min(3, "Name at least 3 characters"),
+  username: z.string().min(3, "Name at least 3 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
 })
 
 const SignupForm = () => {
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -19,14 +26,29 @@ const SignupForm = () => {
   } = useForm<SignUpFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: "Don",
+      username: "Don",
       email: "nguyendoncb@gmail.com",
       password: "nguyendoncb@gmail.com",
     },
   })
-
-  const onSubmit = async (data: SignUpFormData) => {
-    console.log("SUCCESS", data)
+  const { mutate, isPending, isSuccess } = useMutation({
+    mutationFn: (formData: SignUpFormData) => signUp(formData),
+    onSuccess: (data) => {
+      toast.success(data.msg)
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        console.log(error)
+        const errorRes = error.response?.data
+        toast.error(errorRes.msg)
+      }
+    },
+  })
+  const onSubmit = async (formData: SignUpFormData) => {
+    mutate(formData)
+  }
+  if (isSuccess) {
+    navigate(SIGN_IN_PATH)
   }
 
   return (
@@ -35,9 +57,9 @@ const SignupForm = () => {
         fullWidth
         label='Name'
         margin='normal'
-        {...register("name")}
-        error={!!errors.name}
-        helperText={errors.name?.message}
+        {...register("username")}
+        error={!!errors.username}
+        helperText={errors.username?.message}
       />
       <TextField
         fullWidth
@@ -63,9 +85,16 @@ const SignupForm = () => {
         alignItems={"center"}
         sx={{ mt: 2 }}
       >
-        <Button type='submit' size='large' variant='contained' color='primary'>
-          Tạo tài khoản
+        <Button
+          disabled={isPending}
+          type='submit'
+          size='large'
+          variant='contained'
+          color='primary'
+        >
+          {isPending ? "Đang tải" : "Đăng ký"}
         </Button>
+
         <Stack direction='row' spacing={1} alignItems={"center"}>
           <Typography>Bạn đã có tài khoản?</Typography>
           <Link component={RouterLink} to='/sign-in'>
