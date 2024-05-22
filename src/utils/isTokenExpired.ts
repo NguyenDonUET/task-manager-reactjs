@@ -1,16 +1,13 @@
 import { jwtDecode } from "jwt-decode"
 
-function isValidateToken(token: string) {
+function isTokenExpired(token: string) {
   try {
-    if (!token) {
-      return false
-    }
     const decodedToken = jwtDecode(token)
-    const currentTimeInSeconds = Date.now()
+    const currentTimeInSeconds = Date.now() / 1000
 
     return decodedToken.exp! < currentTimeInSeconds
   } catch (error) {
     return false
   }
 }
-export default isValidateToken
+export default isTokenExpired

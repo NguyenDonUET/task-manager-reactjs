@@ -9,7 +9,13 @@ import MenuItem from "@mui/material/MenuItem"
 import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
 import * as React from "react"
-import { useAppSelector } from "../redux/hooks"
+import { useAppDispatch, useAppSelector } from "../redux/hooks"
+import { axiosInstance } from "../api/customAxios"
+import { useMutation } from "@tanstack/react-query"
+import { LOCAL_ACCESS_TOKEN_KEY, SIGN_IN_PATH } from "../utils/constants"
+import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
+import { userLogout } from "../redux/user/userSlice"
 
 const menuOptoins = ["Dashboard", "Logout"]
 
@@ -17,14 +23,39 @@ function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   )
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
   const { user } = useAppSelector((state) => state.user)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
   }
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (option: string) => {
+    if (option === "Logout") {
+      handleLogout()
+    }
     setAnchorElUser(null)
+  }
+
+  const logout = async () => {
+    const { data } = await axiosInstance.get("/auth/logout")
+    return data
+  }
+
+  const { mutate } = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      localStorage.removeItem(LOCAL_ACCESS_TOKEN_KEY)
+      dispatch(userLogout())
+      toast.success("Đăng xuất")
+      navigate(SIGN_IN_PATH)
+    },
+  })
+
+  const handleLogout = async () => {
+    mutate()
   }
 
   return (
@@ -80,9 +111,12 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {menuOptoins.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign='center'>{setting}</Typography>
+              {menuOptoins.map((option) => (
+                <MenuItem
+                  key={option}
+                  onClick={() => handleCloseUserMenu(option)}
+                >
+                  <Typography textAlign='center'>{option}</Typography>
                 </MenuItem>
               ))}
             </Menu>

@@ -1,4 +1,3 @@
-import { Toaster } from "react-hot-toast"
 import { Navigate } from "react-router-dom"
 import AuthLayout from "../components/auth/AuthLayout"
 import SignupForm from "../components/auth/SignupForm"
@@ -12,7 +11,6 @@ export default function SignUp() {
   ) : (
     <AuthLayout title='Tạo tài khoản'>
       <SignupForm />
-      <Toaster />
     </AuthLayout>
   )
 }
