@@ -29,3 +29,7 @@ export type TaskType = {
   updatedAt: string
   userId: string
 }
+export type AddTaskFormData = Omit<
+  TaskType,
+  "_id" | "createdAt" | "updatedAt" | "userId"
+>
