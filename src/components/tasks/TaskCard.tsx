@@ -1,23 +1,41 @@
-// TaskCard.tsx
-
-import React from "react"
 import {
   Button,
   Card,
-  CardActionArea,
   CardActions,
   CardContent,
   IconButton,
   Stack,
   Typography,
 } from "@mui/material"
-import { TaskType } from "../../types"
 import { Pencil, Trash2 } from "lucide-react"
+import React from "react"
+import { TaskType } from "../../types"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { deleteTask } from "../../api/tasks"
+import toast from "react-hot-toast"
 interface TaskCardProps {
   task: TaskType
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+  const queryClient = useQueryClient()
+  const { mutate, isPending } = useMutation({
+    mutationFn: (taskId: string) => deleteTask(taskId),
+    onSuccess: () => {
+      toast.success("Xóa thành công!")
+      queryClient.refetchQueries({
+        queryKey: ["tasks", 1],
+        exact: true,
+      })
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
+  const handleDelete = () => {
+    mutate(task._id)
+  }
   return (
     <Card
       variant='outlined'
@@ -54,7 +72,12 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
           <IconButton aria-label='delete' size='large'>
             <Pencil color='#38a56a' />
           </IconButton>
-          <IconButton aria-label='delete' size='large'>
+          <IconButton
+            aria-label='delete'
+            size='large'
+            disabled={isPending}
+            onClick={handleDelete}
+          >
             <Trash2 color='#d32f2f' />
           </IconButton>
         </Stack>

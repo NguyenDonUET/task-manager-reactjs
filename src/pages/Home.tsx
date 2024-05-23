@@ -56,14 +56,16 @@ export default function Home() {
           <TaskFormAdd handleClose={handleClose} />
         </BaseModal>
 
-        <Box marginBlock={4} display={"flex"} justifyContent={"center"}>
-          <Pagination
-            color='primary'
-            count={data.totalPages}
-            page={page}
-            onChange={handleChange}
-          />
-        </Box>
+        {data.totalPages > 0 && (
+          <Box marginBlock={4} display={"flex"} justifyContent={"center"}>
+            <Pagination
+              color='primary'
+              count={data.totalPages}
+              page={page}
+              onChange={handleChange}
+            />
+          </Box>
+        )}
       </Container>
     </>
   )
