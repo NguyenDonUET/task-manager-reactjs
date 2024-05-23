@@ -22,6 +22,7 @@ import BaseInputField from "../base/BaseInputField"
 interface TaskFormAddProps {
   handleClose: () => void
   task: TaskType
+  page: number
 }
 
 // Định nghĩa schema cho dữ liệu AddTaskFormData
@@ -43,6 +44,7 @@ const schema = z.object({
 const TaskFormEdit: React.FC<TaskFormAddProps> = ({
   handleClose,
   task,
+  page,
 }: TaskFormAddProps) => {
   const {
     register,
@@ -66,7 +68,7 @@ const TaskFormEdit: React.FC<TaskFormAddProps> = ({
     onSuccess: () => {
       toast.success("Cập nhật thành công!")
       queryClient.refetchQueries({
-        queryKey: ["tasks", 1],
+        queryKey: ["tasks", page],
         exact: true,
       })
       handleClose()

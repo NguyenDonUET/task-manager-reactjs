@@ -4,9 +4,9 @@ import { useEffect, useState } from "react"
 import { getTasks } from "../api/tasks"
 import Loading from "../components/Loading"
 import BaseModal from "../components/base/BaseModal"
+import TaskFormAdd from "../components/tasks/TaskFormAdd"
 import TasksContainer from "../components/tasks/TasksContainer"
 import { TaskType } from "../types"
-import TaskFormAdd from "../components/tasks/TaskFormAdd"
 
 export default function Home() {
   const [tasks, setTasks] = useState<TaskType[]>([])
@@ -16,12 +16,11 @@ export default function Home() {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const { data, isPending, isError, error, isSuccess } = useQuery({
+  const { data, isPending, isError, error, isSuccess, isFetching } = useQuery({
     queryKey: ["tasks", page],
     queryFn: () => getTasks(page),
     retry: 2,
     placeholderData: keepPreviousData,
-    refetchOnWindowFocus: false,
   })
 
   useEffect(() => {
@@ -51,7 +50,7 @@ export default function Home() {
             Thêm mới
           </Button>
         </Box>
-        <TasksContainer tasks={tasks} />
+        {<TasksContainer tasks={tasks} page={page} />}
 
         <BaseModal handleClose={handleClose} open={open} title='Thêm task mới'>
           <TaskFormAdd handleClose={handleClose} />

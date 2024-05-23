@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Check, Clock, Hourglass, Pencil, Trash2 } from "lucide-react"
 import React, { useState } from "react"
 import toast from "react-hot-toast"
-import { deleteTask, updateTask } from "../../api/tasks"
+import { GetTasksResponseType, deleteTask, updateTask } from "../../api/tasks"
 import { Status, TaskType } from "../../types"
 import isDateBeforeNow from "../../utils/isDateBeforeNow"
 import BaseModal from "../base/BaseModal"
@@ -22,22 +22,42 @@ import TaskTime from "./TaskTime"
 
 interface TaskCardProps {
   task: TaskType
+  page: number
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
   const queryClient = useQueryClient()
+
   const { mutate: deleteMutate, isPending: deletePending } = useMutation({
     mutationFn: (taskId: string) => deleteTask(taskId),
     onSuccess: () => {
-      toast.success("Xóa thành công!")
       queryClient.refetchQueries({
-        queryKey: ["tasks", 1],
+        queryKey: ["tasks", page],
         exact: true,
       })
+      toast.success("Xóa thành công!")
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+
+  const { mutate: toggleMutate } = useMutation({
+    mutationFn: (task: TaskType) => updateTask(task._id, task),
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["tasks", page],
+        exact: true,
+      })
+      if (isTaskCompleted) {
+        toast.success("Cập nhật thành công!")
+      } else {
+        toast.success("Chúc mừng bạn đã hoàn thành!")
+      }
     },
     onError: (error) => {
       toast.error(error.message)
@@ -49,24 +69,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
   }
 
   const isTaskCompleted = task.status === Status.Completed
-
-  const { mutate: toggleMutate } = useMutation({
-    mutationFn: (task: TaskType) => updateTask(task._id, task),
-    onSuccess: () => {
-      if (isTaskCompleted) {
-        toast.success("Cập nhật thành công!")
-      } else {
-        toast.success("Chúc mừng bạn đã hoàn thành!")
-      }
-      queryClient.refetchQueries({
-        queryKey: ["tasks", 1],
-        exact: true,
-      })
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
 
   const handleToggleTask = () => {
     toggleMutate({
@@ -192,7 +194,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
       </Card>
 
       <BaseModal handleClose={handleClose} open={open} title='Cập nhật task'>
-        <TaskFormEdit handleClose={handleClose} task={task} />
+        <TaskFormEdit handleClose={handleClose} task={task} page={page} />
       </BaseModal>
     </>
   )

@@ -5,7 +5,7 @@ type BaseResponseType = {
   msg: string
 }
 
-type GetTasksResponseType = {
+export type GetTasksResponseType = {
   currentPage: number
   tasks: TaskType[]
   totalItems: number
