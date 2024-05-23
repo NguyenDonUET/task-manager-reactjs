@@ -21,6 +21,7 @@ export default function Home() {
     queryFn: () => getTasks(page),
     retry: 2,
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
   })
 
   useEffect(() => {
