@@ -1,4 +1,4 @@
-import { Box, Button, Container, Pagination } from "@mui/material"
+import { Box, Button, Container, Pagination, Typography } from "@mui/material"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { getTasks } from "../api/tasks"
@@ -6,7 +6,7 @@ import Loading from "../components/Loading"
 import BaseModal from "../components/base/BaseModal"
 import TaskFormAdd from "../components/tasks/TaskFormAdd"
 import TasksContainer from "../components/tasks/TasksContainer"
-import { TaskType } from "../types"
+import { Status, TaskType } from "../types"
 
 export default function Home() {
   const [tasks, setTasks] = useState<TaskType[]>([])
@@ -16,7 +16,7 @@ export default function Home() {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const { data, isPending, isError, error, isSuccess, isFetching } = useQuery({
+  const { data, isPending, isError, error, isSuccess } = useQuery({
     queryKey: ["tasks", page],
     queryFn: () => getTasks(page),
     retry: 2,
@@ -42,10 +42,16 @@ export default function Home() {
     setPage(value)
   }
 
+  const inCompletedTasks = tasks.filter(
+    (task) => task.status === Status.Pending
+  )
   return (
     <>
       <Container>
-        <Box className='flex justify-end pb-4'>
+        <Box className='flex justify-between items-end pb-4 text-gray-500'>
+          <Typography>
+            Tổng số: ${inCompletedTasks.length} việc chưa hoàn thành.
+          </Typography>
           <Button variant='contained' onClick={handleOpen}>
             Thêm mới
           </Button>

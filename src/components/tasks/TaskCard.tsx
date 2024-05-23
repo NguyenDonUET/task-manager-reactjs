@@ -90,6 +90,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
         }}
         className='shadow-lg'
       >
+        {/* header */}
         <Stack direction={"row"} alignItems={""} paddingX={2}>
           <TaskTime date={task.createdAt}>
             <Typography variant='body2'>Ngày tạo</Typography>
@@ -112,7 +113,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
           <Typography variant='body1' color={"GrayText"} flex={"1"} marginY={2}>
             {task.description}
           </Typography>
-
+          {/* task time */}
           <Stack>
             <Stack direction={"row"} justifyContent={"space-between"}>
               <TaskTime date={task.deadline} label='Hạn chót'>
@@ -151,7 +152,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
                   },
                 }}
               >
-                {isTaskCompleted ? "Đã hoàn thành" : "Hoàn thành"}
+                {isTaskCompleted ? "Đã hoàn thành" : "Chưa hoàn thành"}
               </Button>
             </Tooltip>
           )}
@@ -169,7 +170,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
                 },
               }}
             >
-              Đã quá hạn
+              Đã quá hạn 😥
             </Button>
           )}
 
