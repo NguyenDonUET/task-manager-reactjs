@@ -10,14 +10,14 @@ import {
   TextField,
   TextareaAutosize,
 } from "@mui/material"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React from "react"
 import { Controller, useForm } from "react-hook-form"
-import { z } from "zod"
-import { AddTaskFormData, Priority, Status, TaskType } from "../../types"
-import BaseInputField from "../base/BaseInputField"
-import { useMutation } from "@tanstack/react-query"
-import { addTask } from "../../api/tasks"
 import toast from "react-hot-toast"
+import { z } from "zod"
+import { addTask } from "../../api/tasks"
+import { AddTaskFormData, Priority, Status } from "../../types"
+import BaseInputField from "../base/BaseInputField"
 
 interface TaskFormAddProps {
   handleClose: () => void
@@ -57,10 +57,16 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
       deadline: "",
     },
   })
+  const queryClient = useQueryClient()
+
   const { mutate, isPending } = useMutation({
     mutationFn: (task: AddTaskFormData) => addTask(task),
     onSuccess: () => {
       toast.success("Thêm mới thành công!")
+      queryClient.refetchQueries({
+        queryKey: ["tasks", 1],
+        exact: true,
+      })
       handleClose()
     },
     onError: (error) => {
