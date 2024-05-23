@@ -9,18 +9,12 @@ import {
   Typography,
 } from "@mui/material"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import {
-  AlarmClockCheck,
-  Check,
-  Clock,
-  Hourglass,
-  Pencil,
-  Trash2,
-} from "lucide-react"
+import { Check, Clock, Hourglass, Pencil, Trash2 } from "lucide-react"
 import React, { useState } from "react"
 import toast from "react-hot-toast"
 import { deleteTask, updateTask } from "../../api/tasks"
 import { Status, TaskType } from "../../types"
+import isDateBeforeNow from "../../utils/isDateBeforeNow"
 import BaseModal from "../base/BaseModal"
 import TaskChip from "./TaskChip"
 import TaskFormEdit from "./TaskFormEdit"
@@ -81,6 +75,8 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
     })
   }
 
+  const isInCompleted = isDateBeforeNow(task.deadline)
+
   return (
     <>
       <Card
@@ -93,7 +89,9 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         className='shadow-lg'
       >
         <Stack direction={"row"} alignItems={""} paddingX={2}>
-          <TaskTime date={task.createdAt} label='Ngày tạo'></TaskTime>
+          <TaskTime date={task.createdAt}>
+            <Typography variant='body2'>Ngày tạo</Typography>
+          </TaskTime>
           <TaskChip text={task.priority} />
         </Stack>
 
@@ -127,32 +125,51 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         </CardContent>
 
         <CardActions disableSpacing className='justify-between '>
-          <Tooltip
-            title={
-              isTaskCompleted
-                ? "Đánh dấu là chưa hoàn thành"
-                : "Đánh dấu là hoàn thành"
-            }
-            placement='top'
-          >
+          {!isInCompleted && (
+            <Tooltip
+              title={
+                isTaskCompleted
+                  ? "Đánh dấu là chưa hoàn thành"
+                  : "Đánh dấu là hoàn thành"
+              }
+              placement='top'
+            >
+              <Button
+                onClick={handleToggleTask}
+                startIcon={isTaskCompleted && <Check color='#fff' />}
+                variant='contained'
+                sx={{
+                  borderRadius: "16px",
+                  marginLeft: "2px",
+                  textTransform: "capitalize",
+                  backgroundColor: `${isTaskCompleted ? "#4caf50" : "gray"}`,
+                  "&:hover": {
+                    opacity: 0.8,
+                    background: "#357a38",
+                  },
+                }}
+              >
+                {isTaskCompleted ? "Đã hoàn thành" : "Hoàn thành"}
+              </Button>
+            </Tooltip>
+          )}
+
+          {isInCompleted && (
             <Button
-              onClick={handleToggleTask}
-              startIcon={isTaskCompleted && <Check color='#fff' />}
               variant='contained'
               sx={{
                 borderRadius: "16px",
                 marginLeft: "2px",
                 textTransform: "capitalize",
-                backgroundColor: `${isTaskCompleted ? "#4caf50" : "gray"}`,
+                backgroundColor: "gray",
                 "&:hover": {
-                  opacity: 0.8,
-                  background: "#357a38",
+                  backgroundColor: "gray",
                 },
               }}
             >
-              {isTaskCompleted ? "Đã hoàn thành" : "Hoàn thành"}
+              Đã quá hạn
             </Button>
-          </Tooltip>
+          )}
 
           <Stack direction={"row"}>
             <Tooltip title={"Sửa"} placement='top'>
