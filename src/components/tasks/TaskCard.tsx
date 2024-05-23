@@ -80,7 +80,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         className='shadow-lg'
       >
         <CardContent>
-          <Typography variant='h6' color={"#673ab7"}>
+          <Typography variant='h6' color={"#673ab7"} noWrap={true}>
             {task.name}
           </Typography>
           <Typography variant='body1'>
