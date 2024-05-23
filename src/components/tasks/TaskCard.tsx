@@ -8,14 +8,23 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material"
-import { Check, Pencil, Trash2 } from "lucide-react"
-import React, { useState } from "react"
-import { AddTaskFormData, Status, TaskType } from "../../types"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { deleteTask, updateTask } from "../../api/tasks"
+import {
+  AlarmClockCheck,
+  Check,
+  Clock,
+  Hourglass,
+  Pencil,
+  Trash2,
+} from "lucide-react"
+import React, { useState } from "react"
 import toast from "react-hot-toast"
+import { deleteTask, updateTask } from "../../api/tasks"
+import { Status, TaskType } from "../../types"
 import BaseModal from "../base/BaseModal"
+import TaskChip from "./TaskChip"
 import TaskFormEdit from "./TaskFormEdit"
+import TaskTime from "./TaskTime"
 
 interface TaskCardProps {
   task: TaskType
@@ -76,23 +85,48 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
     <>
       <Card
         variant='outlined'
-        sx={{ minHeight: "300px", display: "flex", flexDirection: "column" }}
+        sx={{
+          minHeight: "320px",
+          display: "flex",
+          flexDirection: "column",
+        }}
         className='shadow-lg'
       >
-        <CardContent>
-          <Typography variant='h6' color={"#673ab7"} noWrap={true}>
+        <Stack direction={"row"} alignItems={""} paddingX={2}>
+          <TaskTime date={task.createdAt} label='Ngày tạo'></TaskTime>
+          <TaskChip text={task.priority} />
+        </Stack>
+
+        <CardContent
+          sx={{
+            paddingBottom: "0",
+            flex: "1",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Typography variant='h6' color={"#673ab7"} noWrap>
             {task.name}
           </Typography>
-          <Typography variant='body1'>
-            Description: {task.description}
+
+          <Typography variant='body1' color={"GrayText"} flex={"1"} marginY={2}>
+            {task.description}
           </Typography>
-          <Typography variant='body2'>Priority: {task.priority}</Typography>
-          <Typography variant='body2'>Status: {task.status}</Typography>
-          <Typography variant='body2'>Created at: {task.createdAt}</Typography>
-          <Typography variant='body2'>Updated at: {task.updatedAt}</Typography>
-          <Typography variant='body2'>Deadline: {task.deadline}</Typography>
+
+          <Stack>
+            <Stack direction={"row"} justifyContent={"space-between"}>
+              <TaskTime date={task.deadline} label='Hạn chót'>
+                <Hourglass color='#767676' className='inline-block' />
+              </TaskTime>
+
+              <TaskTime date={task.updatedAt} label='Cập nhật'>
+                <Clock color='#767676' className='inline-block' />
+              </TaskTime>
+            </Stack>
+          </Stack>
         </CardContent>
-        <CardActions disableSpacing className='justify-between mt-auto'>
+
+        <CardActions disableSpacing className='justify-between '>
           <Tooltip
             title={
               isTaskCompleted
