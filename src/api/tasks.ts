@@ -1,5 +1,9 @@
-import { TaskType } from "../types"
+import { AddTaskFormData, TaskType } from "../types"
 import { axiosInstance } from "./customAxios"
+
+type BaseResponseType = {
+  msg: string
+}
 
 type GetTasksResponseType = {
   currentPage: number
@@ -16,8 +20,11 @@ export const getTasks = async (page: number): Promise<GetTasksResponseType> => {
   return data
 }
 
-export const addTask = async (task: TaskType): Promise<TaskType> => {
-  const { data } = await axiosInstance.post("/tasks", task)
+export const addTask = async (task: AddTaskFormData) => {
+  const { data } = await axiosInstance.post<TaskType & BaseResponseType>(
+    "/tasks",
+    task
+  )
   return data
 }
 

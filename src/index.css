@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.error {
+  @apply border border-red-500 outline-none;
+}

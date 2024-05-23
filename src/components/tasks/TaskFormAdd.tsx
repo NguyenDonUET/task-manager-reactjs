@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   MenuItem,
   Stack,
@@ -12,8 +13,11 @@ import {
 import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
-import { AddTaskFormData, Priority, Status } from "../../types"
+import { AddTaskFormData, Priority, Status, TaskType } from "../../types"
 import BaseInputField from "../base/BaseInputField"
+import { useMutation } from "@tanstack/react-query"
+import { addTask } from "../../api/tasks"
+import toast from "react-hot-toast"
 
 interface TaskFormAddProps {
   handleClose: () => void
@@ -21,15 +25,19 @@ interface TaskFormAddProps {
 
 // Định nghĩa schema cho dữ liệu AddTaskFormData
 const schema = z.object({
-  deadline: z.string().min(1, "Deadline can't empty"),
-  description: z.string(),
-  name: z.string(),
+  deadline: z
+    .string()
+    .min(1, "Hạn chót không được để trống")
+    .refine((value) => {
+      const today = new Date()
+      const selectedDate = new Date(value)
+      return selectedDate.getTime() >= today.setHours(0, 0, 0, 0)
+    }, "Deadline phải từ hôm nay trở đi"),
+  description: z.string().min(1, "Mô tả không được để trống"),
+  name: z.string().min(1, "Tên không được để trống"),
   priority: z.nativeEnum(Priority),
   status: z.nativeEnum(Status),
 })
-
-// create datetime-local string in js
-// new Date().toISOString().slice(0, 16)
 
 const TaskFormAdd: React.FC<TaskFormAddProps> = ({
   handleClose,
@@ -49,37 +57,53 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
       deadline: "",
     },
   })
+  const { mutate, isPending } = useMutation({
+    mutationFn: (task: AddTaskFormData) => addTask(task),
+    onSuccess: () => {
+      toast.success("Thêm mới thành công!")
+      handleClose()
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
 
   const onSubmit = async (data: AddTaskFormData) => {
-    console.log("data", data)
+    mutate(data)
   }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box className='flex flex-col gap-4'>
+      <Box className='flex flex-col gap-5'>
         <BaseInputField
           placeholder='Nhập tên'
           label='Tên'
           name='name'
           control={control}
-          errorText=''
+          errorText={errors.name?.message}
         />
         {/* description */}
         <Controller
           name='description'
           control={control}
           render={({ field }) => (
-            <>
+            <Box>
               <FormLabel htmlFor='description'>Mô tả</FormLabel>
               <TextareaAutosize
                 {...field}
                 name='description'
-                className='border p-3'
+                className={`${
+                  errors.description?.message && "error"
+                } p-3 border`}
                 placeholder='Nhập mô tả...'
-                minRows={4} // Set the minimum number of rows
-                maxRows={7} // Set the maximum number of rows
-                style={{ width: "100%" }} // Adjust the width as needed
+                minRows={4}
+                maxRows={7}
+                style={{ width: "100%" }}
               />
-            </>
+              <FormHelperText error>
+                {errors.description?.message}
+              </FormHelperText>
+            </Box>
           )}
         />
         {/* Độ ưu tiên */}
@@ -117,8 +141,8 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
           <Button variant='outlined' onClick={handleClose}>
             Hủy
           </Button>
-          <Button type='submit' variant='contained'>
-            Thêm
+          <Button disabled={isPending} type='submit' variant='contained'>
+            {isPending ? "Đang thêm" : "Thêm"}
           </Button>
         </Stack>
       </Box>

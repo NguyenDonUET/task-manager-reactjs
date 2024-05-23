@@ -5,7 +5,7 @@ interface BaseInputFieldProps {
   name: string
   label: string
   control: Control<any>
-  errorText: string
+  errorText: string | undefined
   placeholder: string
 }
 
@@ -16,6 +16,7 @@ const BaseInputField: React.FC<BaseInputFieldProps> = ({
   errorText,
   placeholder,
 }) => {
+  console.log(errorText)
   return (
     <FormControl>
       <Controller
@@ -25,10 +26,9 @@ const BaseInputField: React.FC<BaseInputFieldProps> = ({
           <>
             <FormLabel htmlFor={name}>{label}</FormLabel>
             <TextField
-              margin='dense'
-              required
-              id={name}
               {...field}
+              margin='dense'
+              id={name}
               fullWidth
               error={!!errorText}
               helperText={errorText}
