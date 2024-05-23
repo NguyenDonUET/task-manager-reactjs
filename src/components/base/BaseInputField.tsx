@@ -7,6 +7,7 @@ interface BaseInputFieldProps {
   control: Control<any>
   errorText: string | undefined
   placeholder: string
+  defaultValue?: string
 }
 
 const BaseInputField: React.FC<BaseInputFieldProps> = ({
@@ -15,8 +16,8 @@ const BaseInputField: React.FC<BaseInputFieldProps> = ({
   control,
   errorText,
   placeholder,
+  defaultValue,
 }) => {
-  console.log(errorText)
   return (
     <FormControl>
       <Controller
@@ -26,6 +27,7 @@ const BaseInputField: React.FC<BaseInputFieldProps> = ({
           <>
             <FormLabel htmlFor={name}>{label}</FormLabel>
             <TextField
+              defaultValue={defaultValue}
               {...field}
               margin='dense'
               id={name}

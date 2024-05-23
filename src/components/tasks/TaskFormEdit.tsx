@@ -15,12 +15,13 @@ import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { z } from "zod"
-import { addTask } from "../../api/tasks"
-import { AddTaskFormData, Priority, Status } from "../../types"
+import { addTask, updateTask } from "../../api/tasks"
+import { AddTaskFormData, Priority, Status, TaskType } from "../../types"
 import BaseInputField from "../base/BaseInputField"
 
 interface TaskFormAddProps {
   handleClose: () => void
+  task: TaskType
 }
 
 // Định nghĩa schema cho dữ liệu AddTaskFormData
@@ -39,8 +40,9 @@ const schema = z.object({
   status: z.nativeEnum(Status),
 })
 
-const TaskFormAdd: React.FC<TaskFormAddProps> = ({
+const TaskFormEdit: React.FC<TaskFormAddProps> = ({
   handleClose,
+  task,
 }: TaskFormAddProps) => {
   const {
     register,
@@ -50,19 +52,19 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
   } = useForm<AddTaskFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: "",
-      description: "",
-      priority: Priority.Medium,
+      name: task.name,
+      description: task.description,
+      priority: task.priority,
       status: Status.Pending,
-      deadline: "",
+      deadline: task.deadline.substring(0, 10),
     },
   })
   const queryClient = useQueryClient()
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (task: AddTaskFormData) => addTask(task),
+    mutationFn: (newTask: AddTaskFormData) => updateTask(task._id, newTask),
     onSuccess: () => {
-      toast.success("Thêm mới thành công!")
+      toast.success("Cập nhật thành công!")
       queryClient.refetchQueries({
         queryKey: ["tasks", 1],
         exact: true,
@@ -75,8 +77,8 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
   })
 
   const onSubmit = async (data: AddTaskFormData) => {
-    console.log("🚀 ~ onSubmit ~ data:", data)
     mutate(data)
+    // console.log(data)
   }
 
   return (
@@ -88,6 +90,7 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
           name='name'
           control={control}
           errorText={errors.name?.message}
+          defaultValue={task.name}
         />
         {/* description */}
         <Controller
@@ -121,7 +124,7 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
             <TextField
               select
               label='Độ ưu tiên'
-              defaultValue={Priority.Medium}
+              defaultValue={Priority.High}
               {...field}
             >
               <MenuItem value={Priority.Low}>Thấp</MenuItem>
@@ -141,6 +144,7 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
             {...register("deadline")}
             error={!!errors.deadline}
             helperText={errors.deadline?.message}
+            defaultValue={task.deadline}
           />
         </FormControl>
 
@@ -149,7 +153,7 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
             Hủy
           </Button>
           <Button disabled={isPending} type='submit' variant='contained'>
-            {isPending ? "Đang thêm" : "Thêm"}
+            {isPending ? "Đang lưu" : "Lưu"}
           </Button>
         </Stack>
       </Box>
@@ -157,4 +161,4 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
   )
 }
 
-export default TaskFormAdd
+export default TaskFormEdit

@@ -30,8 +30,8 @@ export const addTask = async (task: AddTaskFormData) => {
 
 export const updateTask = async (
   taskId: string,
-  updatedTask: TaskType
-): Promise<TaskType> => {
+  updatedTask: AddTaskFormData
+) => {
   const { data } = await axiosInstance.patch(`/tasks/${taskId}`, updatedTask)
   return data
 }
