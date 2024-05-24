@@ -1,5 +1,5 @@
 import axios from "axios"
-import { BACKEND_URL, LOCAL_ACCESS_TOKEN_KEY } from "../utils/constants"
+import { BACKEND_URL, LOCAL_ACCESS_TOKEN_KEY, SIGN_IN_PATH } from "../utils/constants"
 import { refreshToken } from "./auth"
 
 export const axiosInstance = axios.create({
@@ -39,7 +39,7 @@ axiosInstance.interceptors.response.use(
     }
     if (status === 403) {
       localStorage.removeItem(LOCAL_ACCESS_TOKEN_KEY)
-      window.location.href = "/sign-in"
+      window.location.href = SIGN_IN_PATH
       return Promise.reject(error)
     }
     return Promise.reject(error)

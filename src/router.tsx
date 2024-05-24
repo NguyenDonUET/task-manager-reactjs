@@ -5,6 +5,7 @@ import SignIn from "./pages/SignIn"
 import SignUp from "./pages/SignUp"
 import AuthGuard from "./components/AuthGuard"
 import ValidateRedirect from "./components/ValidateRedirect"
+import NotFoundPage from "./pages/NotFound"
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "auth",
     element: <ValidateRedirect />,
     children: [
       {
@@ -33,6 +35,10 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ])
 
