@@ -10,7 +10,7 @@ import { signIn } from "../../hooks/useSignUp"
 import { useAppDispatch } from "../../redux/hooks"
 import { setUserInfo } from "../../redux/user/userSlice"
 import { SignInFormData } from "../../types"
-import { LOCAL_ACCESS_TOKEN_KEY } from "../../utils/constants"
+import { LOCAL_ACCESS_TOKEN_KEY, SIGN_UP_PATH } from "../../utils/constants"
 import getUserInfoFromToken from "../../utils/getUserInfoFromToken"
 
 const schema = z.object({
@@ -95,7 +95,7 @@ const SignInForm = () => {
 
         <Stack direction='row' spacing={1} alignItems={"center"}>
           <Typography>Bạn đã có tài khoản?</Typography>
-          <Link component={RouterLink} to='/sign-up'>
+          <Link component={RouterLink} to={SIGN_UP_PATH}>
             Đăng ký
           </Link>
         </Stack>

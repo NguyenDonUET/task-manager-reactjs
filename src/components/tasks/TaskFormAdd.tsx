@@ -82,6 +82,7 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box className='flex flex-col gap-5'>
+        {/* name */}
         <BaseInputField
           placeholder='Nhập tên'
           label='Tên'

@@ -97,7 +97,7 @@ const SignupForm = () => {
 
         <Stack direction='row' spacing={1} alignItems={"center"}>
           <Typography>Bạn đã có tài khoản?</Typography>
-          <Link component={RouterLink} to='/sign-in'>
+          <Link component={RouterLink} to={SIGN_IN_PATH}>
             Đăng nhập
           </Link>
         </Stack>
