@@ -44,15 +44,17 @@ export default function Home() {
     setPage(value)
   }
 
-  const inCompletedTasks = tasks.filter(
+  const numberInCompletedTasks = tasks.filter(
     (task) => task.status === Status.Pending
-  )
+  ).length
+
   return (
     <>
       <Container>
         <Box className='flex justify-between items-end pb-4 text-gray-500'>
           <Typography>
-            Tổng số: ${inCompletedTasks.length} việc chưa hoàn thành.
+            {numberInCompletedTasks > 0 &&
+              `Tổng số: ${numberInCompletedTasks} việc chưa hoàn thành.`}
           </Typography>
           <Button variant='contained' onClick={handleOpen}>
             Thêm mới
