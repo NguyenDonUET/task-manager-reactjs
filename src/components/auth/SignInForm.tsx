@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { Link as RouterLink, useNavigate } from "react-router-dom"
 import { z } from "zod"
-import { signIn } from "../../hooks/useSignUp"
+import { signIn } from "../../api/auth"
 import { useAppDispatch } from "../../redux/hooks"
 import { setUserInfo } from "../../redux/user/userSlice"
 import { SignInFormData } from "../../types"
@@ -26,8 +26,8 @@ const SignInForm = () => {
   } = useForm<SignInFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: "nguyendoncb@gmail.com",
-      password: "nguyendoncb@gmail.com",
+      email: "demo@gmail.com",
+      password: "demo@gmail.com",
     },
   })
   const dispatch = useAppDispatch()

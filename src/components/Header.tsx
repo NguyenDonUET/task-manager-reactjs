@@ -17,7 +17,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks"
 import { userLogout } from "../redux/user/userSlice"
 import { LOCAL_ACCESS_TOKEN_KEY, SIGN_IN_PATH } from "../utils/constants"
 
-const menuOptoins = ["Dashboard", "Logout"]
+const menuOptoins = ["Đăng xuất"]
 
 function Header() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -33,7 +33,7 @@ function Header() {
   }
 
   const handleCloseUserMenu = (option: string) => {
-    if (option === "Logout") {
+    if (option === "Đăng xuất") {
       handleLogout()
     }
     setAnchorElUser(null)

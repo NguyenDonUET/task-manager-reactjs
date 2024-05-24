@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { Link as RouterLink, useNavigate } from "react-router-dom"
 import { z } from "zod"
-import { signUp } from "../../hooks/useSignUp"
 import { SignUpFormData } from "../../types"
 import { SIGN_IN_PATH } from "../../utils/constants"
+import { signUp } from "../../api/auth"
 
 const schema = z.object({
   username: z.string().min(3, "Name at least 3 characters"),
@@ -26,9 +26,9 @@ const SignupForm = () => {
   } = useForm<SignUpFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      username: "Don",
-      email: "nguyendoncb@gmail.com",
-      password: "nguyendoncb@gmail.com",
+      username: "Dôn Nguyễn",
+      email: "demo@gmail.com",
+      password: "demo@gmail.com",
     },
   })
   const { mutate, isPending, isSuccess } = useMutation({

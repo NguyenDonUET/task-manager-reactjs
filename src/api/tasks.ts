@@ -10,6 +10,7 @@ export type GetTasksResponseType = {
   tasks: TaskType[]
   totalItems: number
   totalPages: number
+  numberInCompletedTasks: number
 }
 const DEFAULT_PAGE_SIZE = 6
 

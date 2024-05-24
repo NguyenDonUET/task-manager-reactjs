@@ -14,7 +14,7 @@ import Loading from "../components/Loading"
 import BaseModal from "../components/base/BaseModal"
 import TaskFormAdd from "../components/tasks/TaskFormAdd"
 import TasksContainer from "../components/tasks/TasksContainer"
-import { Status, TaskType } from "../types"
+import { TaskType } from "../types"
 
 export default function Home() {
   const [tasks, setTasks] = useState<TaskType[]>([])
@@ -30,7 +30,7 @@ export default function Home() {
     queryKey: ["tasks", page],
     queryFn: () => getTasks(page),
     retry: 2,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     refetchOnMount: false,
     placeholderData: keepPreviousData,
   })
@@ -55,10 +55,6 @@ export default function Home() {
     setPage(value)
   }
 
-  const numberInCompletedTasks = tasks.filter(
-    (task) => task.status === Status.Pending
-  ).length
-
   return (
     <>
       <Container>
@@ -67,8 +63,8 @@ export default function Home() {
             variant='body2'
             sx={{ fontSize: { xs: "13px", sm: "14px", md: "16px" } }}
           >
-            {numberInCompletedTasks > 0 &&
-              `Tổng số: ${numberInCompletedTasks} việc chưa hoàn thành.`}
+            {data.numberInCompletedTasks > 0 &&
+              `Tổng số: ${data.numberInCompletedTasks} việc chưa hoàn thành.`}
           </Typography>
           <Button
             sx={{ fontSize: isSmallScreen ? "14px" : "16px" }}
