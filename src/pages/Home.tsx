@@ -1,4 +1,12 @@
-import { Box, Button, Container, Pagination, Typography } from "@mui/material"
+import {
+  Box,
+  Button,
+  Container,
+  Pagination,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import React, { useEffect, useState } from "react"
 import { getTasks } from "../api/tasks"
@@ -11,6 +19,8 @@ import { Status, TaskType } from "../types"
 export default function Home() {
   const [tasks, setTasks] = useState<TaskType[]>([])
   const [page, setPage] = useState(1)
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"))
 
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
@@ -52,12 +62,19 @@ export default function Home() {
   return (
     <>
       <Container>
-        <Box className='flex justify-between items-end pb-4 text-gray-500'>
-          <Typography>
+        <Box className='flex justify-between items-center md:items-end pb-4 text-gray-500'>
+          <Typography
+            variant='body2'
+            sx={{ fontSize: { xs: "13px", sm: "14px", md: "16px" } }}
+          >
             {numberInCompletedTasks > 0 &&
               `Tổng số: ${numberInCompletedTasks} việc chưa hoàn thành.`}
           </Typography>
-          <Button variant='contained' onClick={handleOpen}>
+          <Button
+            sx={{ fontSize: isSmallScreen ? "14px" : "16px" }}
+            variant={isSmallScreen ? "text" : "contained"}
+            onClick={handleOpen}
+          >
             Thêm mới
           </Button>
         </Box>

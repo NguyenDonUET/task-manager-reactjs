@@ -16,7 +16,7 @@ function AuthGuard({ children }: PropsWithChildren) {
     queryKey: ["account"],
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    retry: 0,
+    retry: 2,
   })
 
   useEffect(() => {

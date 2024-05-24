@@ -9,7 +9,12 @@ const style = {
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
-  minWidth: "600px",
+  minWidth: {
+    xs: "310px",
+    sm: "500px",
+    md: "600px",
+    xl: "700px",
+  },
 }
 
 type BaseModalProps = {
@@ -34,7 +39,14 @@ export default function BaseModal({
       aria-describedby='modal-modal-description'
     >
       <Box sx={style} className='rounded-md'>
-        <Typography variant='h3' gutterBottom>
+        <Typography
+          variant='h3'
+          gutterBottom
+          textAlign={"center"}
+          textTransform={"capitalize"}
+          marginBottom={4}
+          sx={{ fontSize: { xs: "1.6rem", sm: "1.7rem", md: "2rem" } }}
+        >
           {title}
         </Typography>
         {children}

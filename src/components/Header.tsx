@@ -71,9 +71,12 @@ function Header() {
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              letterSpacing: {
+                md: ".3rem",
+              },
               color: "inherit",
               textDecoration: "none",
+              fontSize: { xs: "1.6rem", sm: "1.7rem", md: "1.8rem" },
             }}
           >
             TASK MANGER
