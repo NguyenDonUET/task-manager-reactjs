@@ -15,7 +15,7 @@ import React from "react"
 import { Controller, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { z } from "zod"
-import { addTask, updateTask } from "../../api/tasks"
+import { updateTask } from "../../api/tasks"
 import { AddTaskFormData, Priority, Status, TaskType } from "../../types"
 import BaseInputField from "../base/BaseInputField"
 

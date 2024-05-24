@@ -1,6 +1,6 @@
 import { Box, Button, Container, Pagination, Typography } from "@mui/material"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { getTasks } from "../api/tasks"
 import Loading from "../components/Loading"
 import BaseModal from "../components/base/BaseModal"
@@ -40,7 +40,8 @@ export default function Home() {
     return <h2>{error.message}</h2>
   }
 
-  const handleChange = (value: number) => {
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    event.preventDefault()
     setPage(value)
   }
 
@@ -72,7 +73,7 @@ export default function Home() {
               color='primary'
               count={data.totalPages}
               page={page}
-              onChange={() => handleChange}
+              onChange={handleChange}
             />
           </Box>
         )}
