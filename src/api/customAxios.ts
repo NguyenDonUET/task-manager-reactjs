@@ -1,6 +1,6 @@
 import axios from "axios"
-import { checkTokenAndRefresh } from "../components/App"
 import { BACKEND_URL, LOCAL_ACCESS_TOKEN_KEY } from "../utils/constants"
+import { refreshToken } from "./auth"
 
 export const axiosInstance = axios.create({
   baseURL: BACKEND_URL,
@@ -15,30 +15,32 @@ axiosInstance.interceptors.request.use(
     return config
   },
   function (error) {
-    // Handle request error (if needed)
     return Promise.reject(error)
   }
 )
 
-// Interceptor for handling expired tokens
+// Add a response interceptor
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const { response, config } = error
     const status = response?.status
 
-    // Kiểm tra mã lỗi có phải là 401 hoặc 403 hay không
-    if (status === 401 || status === 403) {
-      const accessToken = localStorage.getItem(LOCAL_ACCESS_TOKEN_KEY)!
-      console.log(accessToken)
-      checkTokenAndRefresh(accessToken)
+    if (status === 401) {
+      await refreshToken()
+      console.log("refreshToken done")
 
-      const newAccessToken = localStorage.getItem(LOCAL_ACCESS_TOKEN_KEY)!
+      const newAccessToken = localStorage.getItem(LOCAL_ACCESS_TOKEN_KEY)
 
       axiosInstance.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${newAccessToken}`
       return axiosInstance(config)
+    }
+    if (status === 403) {
+      localStorage.removeItem(LOCAL_ACCESS_TOKEN_KEY)
+      window.location.href = "/sign-in"
+      return Promise.reject(error)
     }
     return Promise.reject(error)
   }

@@ -33,7 +33,7 @@ const SignInForm = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const { mutate, isPending, isSuccess } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (formData: SignInFormData) => signIn(formData),
     onSuccess: (data) => {
       localStorage.setItem(LOCAL_ACCESS_TOKEN_KEY, data?.accessToken)
@@ -41,9 +41,8 @@ const SignInForm = () => {
       if (user) {
         dispatch(setUserInfo(user!))
       }
-      toast.success(data.msg, {
-        duration: 4000,
-      })
+      toast.success(data.msg)
+      navigate("/")
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -58,9 +57,6 @@ const SignInForm = () => {
     mutate(formData)
   }
 
-  if (isSuccess) {
-    navigate("/")
-  }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='max-w-xl'>
       <TextField

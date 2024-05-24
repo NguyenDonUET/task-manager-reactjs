@@ -4,7 +4,6 @@ import { UserType } from "../redux/user/userSlice"
 function getUserInfoFromToken(token: string): UserType | null {
   try {
     const decodedToken: UserType = jwtDecode(token)
-    // Trích xuất thông tin người dùng từ decodedToken
     const userId = decodedToken.userId
     const username = decodedToken.username
     const email = decodedToken.email

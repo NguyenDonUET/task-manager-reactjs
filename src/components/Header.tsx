@@ -8,14 +8,14 @@ import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
 import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
-import * as React from "react"
-import { useAppDispatch, useAppSelector } from "../redux/hooks"
-import { axiosInstance } from "../api/customAxios"
 import { useMutation } from "@tanstack/react-query"
-import { LOCAL_ACCESS_TOKEN_KEY, SIGN_IN_PATH } from "../utils/constants"
+import * as React from "react"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
+import { axiosInstance } from "../api/customAxios"
+import { useAppDispatch, useAppSelector } from "../redux/hooks"
 import { userLogout } from "../redux/user/userSlice"
+import { LOCAL_ACCESS_TOKEN_KEY, SIGN_IN_PATH } from "../utils/constants"
 
 const menuOptoins = ["Dashboard", "Logout"]
 

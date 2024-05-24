@@ -20,6 +20,8 @@ export default function Home() {
     queryKey: ["tasks", page],
     queryFn: () => getTasks(page),
     retry: 2,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
     placeholderData: keepPreviousData,
   })
 
@@ -38,7 +40,7 @@ export default function Home() {
     return <h2>{error.message}</h2>
   }
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (value: number) => {
     setPage(value)
   }
 
@@ -68,7 +70,7 @@ export default function Home() {
               color='primary'
               count={data.totalPages}
               page={page}
-              onChange={handleChange}
+              onChange={() => handleChange}
             />
           </Box>
         )}
