@@ -1,30 +1,16 @@
-# React + TypeScript + Vite
+# Task Manager
+![image](https://github.com/NguyenDonUET/task-manager-reactjs/assets/65279409/3533ef03-0df7-4ccd-b223-d852460c6553)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+##  Introduction
+- This is a web application designed for efficient task management. I took responsibility for developing both the frontend and backend components of this project. It encompasses essential features such as user authentication, task creation, reading, updating, and deletion, as well as pagination for improved usability.
 
-Currently, two official plugins are available:
+## Key Features
+- User Authentication: Implemented login and signup functionalities to ensure secure access to the task management system.
+- Token Refresh: Integrated a token refresh mechanism to provide a seamless user experience and maintain session persistence.
+- Task CRUD Operations: Developed the ability to create, read, update, and delete tasks, enabling users to efficiently manage their to-do lists.
+- Pagination: Implemented pagination functionality to enhance the performance and navigation of the task management system.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Technologies
+- Frontend: React, Material UI(MUI), React query
+- Backend: Nodejs, Expressjs
+- Database: MongoDB
