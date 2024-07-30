@@ -10,8 +10,7 @@ import { signIn } from '../../api/auth'
 import { useAppDispatch } from '../../redux/hooks'
 import { setUserInfo } from '../../redux/user/userSlice'
 import { SignInFormData } from '../../types'
-import { LOCAL_ACCESS_TOKEN_KEY, SIGN_UP_PATH } from '../../utils/constants'
-import getUserInfoFromToken from '../../utils/getUserInfoFromToken'
+import { SIGN_UP_PATH } from '../../utils/constants'
 
 const schema = z.object({
   email: z.string().email('Invalid email address'),
