@@ -1,21 +1,21 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button, Link, Stack, TextField, Typography } from "@mui/material"
-import { useMutation } from "@tanstack/react-query"
-import { AxiosError } from "axios"
-import { useForm } from "react-hook-form"
-import toast from "react-hot-toast"
-import { Link as RouterLink, useNavigate } from "react-router-dom"
-import { z } from "zod"
-import { signIn } from "../../api/auth"
-import { useAppDispatch } from "../../redux/hooks"
-import { setUserInfo } from "../../redux/user/userSlice"
-import { SignInFormData } from "../../types"
-import { LOCAL_ACCESS_TOKEN_KEY, SIGN_UP_PATH } from "../../utils/constants"
-import getUserInfoFromToken from "../../utils/getUserInfoFromToken"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button, Link, Stack, TextField, Typography } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
+import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { z } from 'zod'
+import { signIn } from '../../api/auth'
+import { useAppDispatch } from '../../redux/hooks'
+import { setUserInfo } from '../../redux/user/userSlice'
+import { SignInFormData } from '../../types'
+import { LOCAL_ACCESS_TOKEN_KEY, SIGN_UP_PATH } from '../../utils/constants'
+import getUserInfoFromToken from '../../utils/getUserInfoFromToken'
 
 const schema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters long"),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters long'),
 })
 
 const SignInForm = () => {
@@ -26,8 +26,8 @@ const SignInForm = () => {
   } = useForm<SignInFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      email: "demo@gmail.com",
-      password: "demo@gmail.com",
+      email: 'demo@gmail.com',
+      password: 'demo@gmail.com',
     },
   })
   const dispatch = useAppDispatch()
@@ -36,13 +36,13 @@ const SignInForm = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: (formData: SignInFormData) => signIn(formData),
     onSuccess: (data) => {
-      localStorage.setItem(LOCAL_ACCESS_TOKEN_KEY, data?.accessToken)
-      const user = getUserInfoFromToken(data?.accessToken)
-      if (user) {
-        dispatch(setUserInfo(user!))
+      const userInfo = data?.userInfo
+      localStorage.setItem('userInfo', JSON.stringify(userInfo))
+      if (userInfo) {
+        dispatch(setUserInfo(userInfo!))
       }
       toast.success(data.msg)
-      navigate("/")
+      navigate('/home')
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -64,7 +64,7 @@ const SignInForm = () => {
         label='Email'
         type='email'
         margin='normal'
-        {...register("email")}
+        {...register('email')}
         error={!!errors.email}
         helperText={errors.email?.message}
       />
@@ -73,14 +73,14 @@ const SignInForm = () => {
         label='Password'
         type='password'
         margin='normal'
-        {...register("password")}
+        {...register('password')}
         error={!!errors.password}
         helperText={errors.password?.message}
       />
       <Stack
         direction='column'
         spacing={2}
-        alignItems={"center"}
+        alignItems={'center'}
         sx={{ mt: 2 }}
       >
         <Button
@@ -90,10 +90,10 @@ const SignInForm = () => {
           variant='contained'
           color='primary'
         >
-          {isPending ? "Đang tải" : "Đăng nhập"}
+          {isPending ? 'Đang tải' : 'Đăng nhập'}
         </Button>
 
-        <Stack direction='row' spacing={1} alignItems={"center"}>
+        <Stack direction='row' spacing={1} alignItems={'center'}>
           <Typography>Bạn đã có tài khoản?</Typography>
           <Link component={RouterLink} to={SIGN_UP_PATH}>
             Đăng ký

@@ -1,18 +1,31 @@
-import { createBrowserRouter } from "react-router-dom"
-import AuthGuard from "./components/AuthGuard"
-import RootLayout from "./components/RootLayout"
-import ValidateRedirect from "./components/ValidateRedirect"
-import { Home, SignIn, SignUp } from "./pages"
-import NotFoundPage from "./pages/NotFound"
+import { createBrowserRouter, Navigate } from 'react-router-dom'
+import ValidateRedirect from './components/ValidateRedirect'
+import { Home, SignIn, SignUp } from './pages'
+import NotFoundPage from './pages/NotFound'
+import RootLayout from './components/RootLayout'
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: (
-      <AuthGuard>
-        <RootLayout />
-      </AuthGuard>
-    ),
+    path: '/',
+    element: <Navigate to={'/auth/sign-in'} />,
+  },
+  {
+    path: 'auth',
+    element: <ValidateRedirect />,
+    children: [
+      {
+        path: 'sign-in',
+        element: <SignIn />,
+      },
+      {
+        path: 'sign-up',
+        element: <SignUp />,
+      },
+    ],
+  },
+  {
+    path: 'home',
+    element: <RootLayout />,
     children: [
       {
         index: true,
@@ -21,21 +34,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "auth",
-    element: <ValidateRedirect />,
-    children: [
-      {
-        path: "sign-in",
-        element: <SignIn />,
-      },
-      {
-        path: "sign-up",
-        element: <SignUp />,
-      },
-    ],
-  },
-  {
-    path: "*",
+    path: '*',
     element: <NotFoundPage />,
   },
 ])

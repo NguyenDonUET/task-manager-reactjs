@@ -1,4 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Box,
   Button,
@@ -9,15 +9,15 @@ import {
   Stack,
   TextField,
   TextareaAutosize,
-} from "@mui/material"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import React from "react"
-import { Controller, useForm } from "react-hook-form"
-import toast from "react-hot-toast"
-import { z } from "zod"
-import { addTask } from "../../api/tasks"
-import { AddTaskFormData, Priority, Status } from "../../types"
-import BaseInputField from "../base/BaseInputField"
+} from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import React from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { z } from 'zod'
+import { addTask } from '../../api/tasks'
+import { AddTaskFormData, Priority, Status } from '../../types'
+import BaseInputField from '../base/BaseInputField'
 
 interface TaskFormAddProps {
   handleClose: () => void
@@ -27,14 +27,14 @@ interface TaskFormAddProps {
 const schema = z.object({
   deadline: z
     .string()
-    .min(1, "Hạn chót không được để trống")
+    .min(1, 'Hạn chót không được để trống')
     .refine((value) => {
       const today = new Date()
       const selectedDate = new Date(value)
       return selectedDate.getTime() >= today.setHours(0, 0, 0, 0)
-    }, "Deadline phải từ hôm nay trở đi"),
-  description: z.string().min(1, "Mô tả không được để trống"),
-  name: z.string().min(1, "Tên không được để trống"),
+    }, 'Deadline phải từ hôm nay trở đi'),
+  description: z.string().min(1, 'Mô tả không được để trống'),
+  name: z.string().min(1, 'Tên không được để trống'),
   priority: z.nativeEnum(Priority),
   status: z.nativeEnum(Status),
 })
@@ -50,11 +50,11 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
   } = useForm<AddTaskFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       priority: Priority.Medium,
       status: Status.Pending,
-      deadline: "",
+      deadline: '',
     },
   })
   const queryClient = useQueryClient()
@@ -62,10 +62,9 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
   const { mutate, isPending } = useMutation({
     mutationFn: (task: AddTaskFormData) => addTask(task),
     onSuccess: () => {
-      toast.success("Thêm mới thành công!")
-      queryClient.refetchQueries({
-        queryKey: ["tasks", 1],
-        exact: true,
+      toast.success('Thêm mới thành công!')
+      queryClient.invalidateQueries({
+        queryKey: ['tasks', 1],
       })
       handleClose()
     },
@@ -75,7 +74,7 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
   })
 
   const onSubmit = async (data: AddTaskFormData) => {
-    console.log("🚀 ~ onSubmit ~ data:", data)
+    console.log('🚀 ~ onSubmit ~ data:', data)
     mutate(data)
   }
 
@@ -101,12 +100,12 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
                 {...field}
                 name='description'
                 className={`${
-                  errors.description?.message && "error"
+                  errors.description?.message && 'error'
                 } p-3 border`}
                 placeholder='Nhập mô tả...'
                 minRows={4}
                 maxRows={7}
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
               />
               <FormHelperText error>
                 {errors.description?.message}
@@ -139,18 +138,18 @@ const TaskFormAdd: React.FC<TaskFormAddProps> = ({
             fullWidth
             margin='dense'
             type='date'
-            {...register("deadline")}
+            {...register('deadline')}
             error={!!errors.deadline}
             helperText={errors.deadline?.message}
           />
         </FormControl>
 
-        <Stack direction={"row"} gap={2} marginLeft={"auto"}>
+        <Stack direction={'row'} gap={2} marginLeft={'auto'}>
           <Button variant='outlined' onClick={handleClose}>
             Hủy
           </Button>
           <Button disabled={isPending} type='submit' variant='contained'>
-            {isPending ? "Đang thêm" : "Thêm"}
+            {isPending ? 'Đang thêm' : 'Thêm'}
           </Button>
         </Stack>
       </Box>

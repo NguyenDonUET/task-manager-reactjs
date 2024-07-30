@@ -7,18 +7,18 @@ import {
   Stack,
   Tooltip,
   Typography,
-} from "@mui/material"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Check, Clock, Hourglass, Pencil, Trash2 } from "lucide-react"
-import React, { useState } from "react"
-import toast from "react-hot-toast"
-import { deleteTask, updateTask } from "../../api/tasks"
-import { Status, TaskType } from "../../types"
-import isDateBeforeNow from "../../utils/isDateBeforeNow"
-import BaseModal from "../base/BaseModal"
-import TaskChip from "./TaskChip"
-import TaskFormEdit from "./TaskFormEdit"
-import TaskTime from "./TaskTime"
+} from '@mui/material'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Check, Clock, Hourglass, Pencil, Trash2 } from 'lucide-react'
+import React, { useState } from 'react'
+import toast from 'react-hot-toast'
+import { deleteTask, updateTask } from '../../api/tasks'
+import { Status, TaskType } from '../../types'
+import isDateBeforeNow from '../../utils/isDateBeforeNow'
+import BaseModal from '../base/BaseModal'
+import TaskChip from './TaskChip'
+import TaskFormEdit from './TaskFormEdit'
+import TaskTime from './TaskTime'
 
 interface TaskCardProps {
   task: TaskType
@@ -36,10 +36,10 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
     mutationFn: (taskId: string) => deleteTask(taskId),
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["tasks", page],
+        queryKey: ['tasks', page],
         exact: true,
       })
-      toast.success("Xóa thành công!")
+      toast.success('Xóa thành công!')
     },
     onError: (error) => {
       toast.error(error.message)
@@ -50,13 +50,13 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
     mutationFn: (task: TaskType) => updateTask(task._id, task),
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["tasks", page],
+        queryKey: ['tasks', page],
         exact: true,
       })
       if (isTaskCompleted) {
-        toast.success("Cập nhật thành công!")
+        toast.success('Cập nhật thành công!')
       } else {
-        toast.success("Chúc mừng bạn đã hoàn thành!")
+        toast.success('Chúc mừng bạn đã hoàn thành!')
       }
     },
     onError: (error) => {
@@ -84,14 +84,14 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
       <Card
         variant='outlined'
         sx={{
-          minHeight: "320px",
-          display: "flex",
-          flexDirection: "column",
+          minHeight: '320px',
+          display: 'flex',
+          flexDirection: 'column',
         }}
         className='shadow-lg'
       >
         {/* header */}
-        <Stack direction={"row"} alignItems={""} paddingX={2}>
+        <Stack direction={'row'} alignItems={''} paddingX={2}>
           <TaskTime date={task.createdAt}>
             <Typography variant='body2'>Ngày tạo</Typography>
           </TaskTime>
@@ -100,22 +100,22 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
 
         <CardContent
           sx={{
-            paddingBottom: "0",
-            flex: "1",
-            display: "flex",
-            flexDirection: "column",
+            paddingBottom: '0',
+            flex: '1',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          <Typography variant='h6' color={"#673ab7"} noWrap>
+          <Typography variant='h6' color={'#673ab7'} noWrap>
             {task.name}
           </Typography>
 
-          <Typography variant='body1' color={"GrayText"} flex={"1"} marginY={2}>
+          <Typography variant='body1' color={'GrayText'} flex={'1'} marginY={2}>
             {task.description}
           </Typography>
           {/* task time */}
           <Stack>
-            <Stack direction={"row"} justifyContent={"space-between"}>
+            <Stack direction={'row'} justifyContent={'space-between'}>
               <TaskTime date={task.deadline} label='Hạn chót'>
                 <Hourglass color='#767676' className='inline-block' />
               </TaskTime>
@@ -132,8 +132,8 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
             <Tooltip
               title={
                 isTaskCompleted
-                  ? "Đánh dấu là chưa hoàn thành"
-                  : "Đánh dấu là hoàn thành"
+                  ? 'Đánh dấu là chưa hoàn thành'
+                  : 'Đánh dấu là hoàn thành'
               }
               placement='top'
             >
@@ -142,17 +142,17 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
                 startIcon={isTaskCompleted && <Check color='#fff' />}
                 variant='contained'
                 sx={{
-                  borderRadius: "16px",
-                  marginLeft: "2px",
-                  textTransform: "capitalize",
-                  backgroundColor: `${isTaskCompleted ? "#4caf50" : "gray"}`,
-                  "&:hover": {
+                  borderRadius: '16px',
+                  marginLeft: '2px',
+                  textTransform: 'capitalize',
+                  backgroundColor: `${isTaskCompleted ? '#4caf50' : 'gray'}`,
+                  '&:hover': {
                     opacity: 0.8,
-                    background: "#357a38",
+                    background: '#357a38',
                   },
                 }}
               >
-                {isTaskCompleted ? "Đã hoàn thành" : "Chưa hoàn thành"}
+                {isTaskCompleted ? 'Đã hoàn thành' : 'Đánh dấu hoàn thành'}
               </Button>
             </Tooltip>
           )}
@@ -161,12 +161,12 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
             <Button
               variant='contained'
               sx={{
-                borderRadius: "16px",
-                marginLeft: "2px",
-                textTransform: "capitalize",
-                backgroundColor: "gray",
-                "&:hover": {
-                  backgroundColor: "gray",
+                borderRadius: '16px',
+                marginLeft: '2px',
+                textTransform: 'capitalize',
+                backgroundColor: 'gray',
+                '&:hover': {
+                  backgroundColor: 'gray',
                 },
               }}
             >
@@ -174,13 +174,13 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, page }) => {
             </Button>
           )}
 
-          <Stack direction={"row"}>
-            <Tooltip title={"Sửa"} placement='top'>
+          <Stack direction={'row'}>
+            <Tooltip title={'Sửa'} placement='top'>
               <IconButton aria-label='delete' size='large' onClick={handleOpen}>
                 <Pencil color='#38a56a' />
               </IconButton>
             </Tooltip>
-            <Tooltip title={"Xóa"} placement='top'>
+            <Tooltip title={'Xóa'} placement='top'>
               <IconButton
                 aria-label='delete'
                 size='large'

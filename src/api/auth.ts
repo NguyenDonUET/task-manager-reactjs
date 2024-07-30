@@ -1,8 +1,8 @@
-import axios from "axios"
-import { UserType } from "../redux/user/userSlice"
-import { SignInFormData, SignUpFormData } from "../types"
-import { BACKEND_URL, LOCAL_ACCESS_TOKEN_KEY } from "../utils/constants"
-import { axiosInstance } from "./customAxios"
+import axios from 'axios'
+import { UserType } from '../redux/user/userSlice'
+import { SignInFormData, SignUpFormData } from '../types'
+import { BACKEND_URL, LOCAL_ACCESS_TOKEN_KEY } from '../utils/constants'
+import { axiosInstance } from './customAxios'
 
 export const refreshToken = async () => {
   try {
@@ -13,7 +13,7 @@ export const refreshToken = async () => {
     localStorage.setItem(LOCAL_ACCESS_TOKEN_KEY, newAccessToken)
   } catch (error) {
     // refresh token hết hạn
-    console.log("🚀 ~ refreshToken ~ error:", error)
+    console.log('🚀 ~ refreshToken ~ error:', error)
   }
 }
 
