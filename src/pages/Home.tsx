@@ -63,6 +63,7 @@ export default function Home() {
           <Typography
             variant='body2'
             sx={{ fontSize: { xs: '13px', sm: '14px', md: '16px' } }}
+            sx={{ fontSize: { xs: '13px', sm: '14px', md: '16px' } }}
           >
             {/* {response.numberInCompletedTasks > 0 &&
               `Tổng số: ${response.numberInCompletedTasks} việc chưa hoàn thành.`} */}
